@@ -1,0 +1,36 @@
+# TABLE_REGISTRY.yaml — single source of truth for publication-facing table identity.
+# Generated 2026-10-04 (B7-4); titles aligned to manuscript designations 2026-10-05
+# (Final Delivery Audit E-P1-4: standalone sequence collided with manuscript Table 1).
+# All table carriers are validated against this registry by the release
+# freeze verification step (repo-resident script; not shipped in the package).
+# Do not hand-edit individual table titles;
+# edit this registry, then regenerate/verify carriers.
+#
+# manuscript_designation: how the manuscript cites the table
+# file_title: the exact "# ..." self-title line required in every carrier copy
+# carriers: directories whose copies must be byte-consistent with Tables/ canonical
+
+registry_version: 2
+tables:
+  - file: Table1_study_design.md
+    manuscript_designation: "Extended Data Table 1—Study design"
+    file_title: "Extended Data Table 1 — Study design"
+    carriers: [Tables/, 05_DATA_FOR_FIGURES/, NCS_UPLOAD/Source_Data/]
+  - file: Table2_core_comparison.md
+    manuscript_designation: "Table 1—Core model comparison"
+    file_title: "Table 1 — Core model comparison"
+    carriers: [Tables/, 05_DATA_FOR_FIGURES/, NCS_UPLOAD/Source_Data/]
+    note: "Filenames keep the historical package sequence (Table1..Table4) for
+           stable cross-references and Source Data row-key prefixes (Table2.*,
+           Table4.*); every file's self-title now equals its manuscript
+           designation, so no uploaded table title collides with a manuscript
+           callout. This registry is the authoritative filename-to-table map."
+  - file: Table3_external.md
+    manuscript_designation: "Extended Data Table 3"
+    file_title: 'Extended Data Table 3 — External zero-shot anchor transfer (zero-shot AUROC)'
+    carriers: [Tables/, 05_DATA_FOR_FIGURES/, NCS_UPLOAD/Source_Data/]
+  - file: Table4_attribution_shortcut.md
+    manuscript_designation: "Extended Data Table 2"
+    file_title: "Extended Data Table 2 — Attribution / shortcut / calibration"
+    carriers: [Tables/, 05_DATA_FOR_FIGURES/, NCS_UPLOAD/Source_Data/]
+manifest_tables_note: "Extended Data Tables 4 and 5 are manuscript-internal (no standalone file)."

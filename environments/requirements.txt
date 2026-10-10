@@ -1,0 +1,14 @@
+# Main training environment (pip fallback if conda unavailable)
+torch==2.5.1
+transformers==4.44.2
+scikit-learn==1.7.2
+numpy==1.26.4
+scipy==1.14.1
+pandas==2.3.3
+matplotlib==3.10.9
+pyyaml==6.0.2
+joblib==1.5.3
+tqdm==4.67.1
+python-docx==1.2.0
+biopython>=1.80
+pyfaidx>=0.8

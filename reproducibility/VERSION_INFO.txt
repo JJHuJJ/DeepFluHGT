@@ -1,0 +1,6 @@
+DeepFluHGT — environment summary
+Python 3.10.20 | PyTorch 2.5.1
+Hardware: data-center and consumer-grade GPU classes (see paper Methods)
+Precision: backbone forward fp32; training runs recorded per checkpoint contract
+Deterministic algorithms enabled (CuBLAS workspace configured) during evaluation
+License: to be confirmed upon publication (PI-DECIDED)

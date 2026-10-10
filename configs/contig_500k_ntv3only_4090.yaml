@@ -1,0 +1,173 @@
+# DeepFluHGT  —  M0 (NTv3-only 500k) local 4090 version
+# Only difference vs configs/contig_500k_ntv3only.yaml: batch/accumulation (effective batch 16 unchanged) and workers.
+# checkpoint directory isolated from M2 (Contig_500k_ntv3only); log logs/M0_contig_ntv3only.log
+# DeepFluHGT  —  Contig 500K NTv3-only baseline (3C ablation control)
+# ============================================================
+# Key changes vs 8.0:
+#   1. NTv3 → NTv3-650M-pre (official pre variant; species_ids no longer required,
+#      eliminating the 8.0 species_id=6 [clownfish] conditioning bug)
+#   2. Caduceus removed (pretrained only on the human genome hg38; domain mismatch with influenza-microbe HGT);
+#      RC equivariance is restored through rc_aug_prob data augmentation
+#   3. Added Evo2 7B offline embedding (third-modality global prior; zero-initialized residual gate injected into the decision layer)
+# Data continues to use Contig_500k (simulator section kept for regeneration)
+
+data:
+  mode: "contig"
+  read_length: 150
+  max_contig_length: 100000
+  use_sliding_window: true
+  sw_window_size: 3000
+  sw_overlap: 300
+  sw_max_neg_windows: 2
+  sw_max_eval_windows: 10
+  # ── ──
+  evo_cache_path: ""     # baseline: do not use Evo2
+  rc_aug_prob: 0.5        # v7: RC data augmentation, applies to the train split only (contig mode)
+
+simulator:
+  virus_fasta: ""
+  microbe_dir: ""
+  output_dir: "./simulated_data/Contig_500k"
+  n_pos: 250000
+  n_neg: 250000
+  seed: 42
+  read_len: 150
+  contig_min_length: 300
+  contig_max_length: 100000
+  insertion_prob: 0.6
+  replacement_prob: 0.3
+  deletion_prob: 0.1
+  multi_event_enabled: true
+  multi_event_prob: 0.2
+  multi_event_max: 3
+  multi_event_min_gap: 20
+  sandwich_enabled: true
+  sandwich_prob: 0.15
+  sandwich_min_gap: 5
+  virus_fragment_min: 50
+  virus_fragment_max: 2341
+  virus_fragments_per_genome: 500
+  multi_source_host_enabled: true
+  multi_source_host_prob: 0.2
+  multi_source_host_max: 3
+  processes: 200
+  do_split: true
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+  gc_bias: true
+  use_coverage: true
+
+  virus_frag_tiers:
+    contig:
+      - [20, 100, 0.10]
+      - [100, 300, 0.12]
+      - [300, 800, 0.18]
+      - [800, 1500, 0.35]
+      - [1500, 2341, 0.25]
+
+  contig_hgt_mode_ranges:
+    insertion: [0.70, 0.90]
+    replacement: [0.08, 0.25]
+    deletion: [0.01, 0.10]
+
+  neg_type_ratios:
+    NEG: 0.20
+    NEG_VIRUS: 0.10
+    NEG_HARD: 0.10
+    NEG_PCR: 0.05
+    NEG_CONSERVED: 0.08
+    NEG_HOMOLOGY: 0.08
+    NEG_LOW_COMPLEXITY: 0.05
+    NEG_GC_MATCHED_CHIMERIC: 0.15
+    NEG_AMALGAMATED_HGT: 0.10
+    NEG_PARTIAL_VIRUS_HIT: 0.09
+
+  seq_platform: "illumina"
+  coverage_distribution: "lognormal"
+  coverage_zipf_alpha: 1.0
+  batch_effect_sigma: 0.05
+  contamination_rate: 0.03
+  contaminant_dir: ""
+  assembly_artifact_rate: 0.05
+  label_noise: 0.02
+  boundary_shift_max: 2
+
+  evolutionary_distance: 0.0
+  evolutionary_distance_tiers:
+    - [0.0,   0.01,  0.20]    # Recent HGT: 20%
+    - [0.01,  0.05,  0.30]    # Medium HGT: 30%
+    - [0.05,  0.15,  0.50]    # Ancient HGT: 50%
+  host_mutation_rate: 0.003
+  open_set_virus: true
+
+  gc_amelioration: true
+  evo_distance_distribution: "gamma"
+  evo_distance_gamma_shape: 2.0
+  microhomology_len: 3
+
+  genome_isolation: true
+  genome_isolation_microbe_ratios: [0.8, 0.1, 0.1]
+  genome_isolation_virus_ratios: [0.7, 0.15, 0.15]
+
+model:
+  hidden_dim: 768
+  num_attention_heads: 12
+  dropout: 0.15
+  graph_top_k: 5
+  bio_feature_dim: 260
+  # ── backbone models ──
+  pretrained_nt_path: "../../../model/InstaDeepAI/NTv3_650M_pre"
+  pretrained_caduceus_path: ""        # v7: Caduceus removed (pretrained on hg38 human genome, domain mismatch)
+  use_local_encoder: false            # v7: single live encoder (NTv3-pre)
+  use_evo: false                    # baseline: pure NTv3-pre
+  pretrained_evo_dim: 4096            # evo2_7b hidden_size
+  evo_hidden: 512
+
+loss:
+  use_uncertainty_weight: true
+  cls_weight: 1.0
+  bp_weight: 0.8
+  role_weight: 0.2
+  direction_weight: 0.2
+  region_pos_weight: 15.0
+  cascade_gate_slope: 10.0
+
+training:
+  learning_rate: 3.0e-5
+  batch_size: 4               # 4090 sweep-measured optimum (17.5GB/24GB, 15.9 window/s); ×acc4 = effective 16
+  backbone_lr_ratio: 0.1
+  lora_lr_multiplier: 2.0
+  weight_decay: 0.05
+  max_epochs: 12      # Pilot evidence: frozen encoder plateaus at ep8-10 (5k curve); 500k not run to the full schedule
+  gradient_clip_norm: 5.0
+  accumulation_steps: 4
+  warmup_ratio: 0.06
+  schedule_type: "cosine"
+  use_lora: false
+  lora_rank: 8
+  lora_alpha: 16.0
+  use_amp: true
+  amp_dtype: "bfloat16"  # fix: fp16 scaler collapse (INCIDENT-AMP-001)
+  freeze_epochs: 12      # contract: encoder permanently frozen (= max_epochs); see assert in DeepFluHGT.py
+  mixup_alpha: 0.2
+  save_epochs: 1           # Rule: save full weights every epoch, never delete
+  checkpoint_dir: "./checkpoints/Contig_500k_ntv3only"
+  log_interval: 50
+  global_lr_ratio: 0.1     # NTv3-pre encoder LR group
+  local_lr_ratio: 0.2      # v7: no local encoder, this group is null (kept for compatibility)
+  use_fgm: false      # v7: with the encoder frozen, FGM (perturbing encoder embeddings) has no effect; disabled
+
+evaluation:
+  threshold: 0.5
+  output_dir: "./eval_output/Contig_500k_ntv3only"
+  compute_breakpoint: true
+  compute_direction: true
+
+utils:
+  log_backend: "print"
+  early_stop_patience: 4   # Pilot: +0.002 AUPRC after plateau is noise; do not keep chasing
+  checkpoint_max_keep: 5
+  num_workers: 8   # compromise to coexist with the A100 cache job
+  prefetch_factor: 4
+  persistent_workers: true

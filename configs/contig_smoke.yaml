@@ -1,0 +1,84 @@
+# DeepFluHGT  —  Contig smoke test config
+# ============================================================
+# Walk the full training path with a minimal dataset (Contig_500_p1test) + real NTv3-pre weights.
+# usage:
+#   python DeepFluHGT.py train --config configs/contig_smoke.yaml \
+#       --data_dir simulated_data/Contig_500_p1test
+# Checkpoints to verify: NTv3-pre offline loading, RC augmentation, graceful degradation when the evo cache is missing,
+#         one training epoch without NaN, checkpoint save.
+
+data:
+  mode: "contig"
+  read_length: 150
+  max_contig_length: 100000
+  use_sliding_window: true
+  sw_window_size: 1500
+  sw_overlap: 300
+  sw_max_neg_windows: 2
+  sw_max_eval_windows: 10
+  evo_cache_path: "./evo_cache/contig_smoke"   # real Evo2 cache for the 500-item small dataset
+  rc_aug_prob: 0.5
+
+simulator:
+  virus_fasta: ""
+  microbe_dir: ""
+  output_dir: "./simulated_data/Contig_500_p1test"
+  n_pos: 250
+  n_neg: 250
+  seed: 42
+
+model:
+  hidden_dim: 768
+  num_attention_heads: 12
+  dropout: 0.15
+  graph_top_k: 5
+  bio_feature_dim: 260
+  pretrained_nt_path: "../../../model/InstaDeepAI/NTv3_650M_pre"
+  pretrained_caduceus_path: ""
+  use_local_encoder: false
+  use_evo: true
+  pretrained_evo_dim: 4096
+  evo_hidden: 512
+
+loss:
+  use_uncertainty_weight: true
+  cls_weight: 1.0
+  bp_weight: 0.8
+  role_weight: 0.2
+  direction_weight: 0.2
+  region_pos_weight: 15.0
+  cascade_gate_slope: 10.0
+
+training:
+  learning_rate: 2.0e-5
+  batch_size: 4
+  backbone_lr_ratio: 0.1
+  weight_decay: 0.05
+  max_epochs: 1
+  gradient_clip_norm: 5.0
+  accumulation_steps: 1
+  warmup_ratio: 0.06
+  schedule_type: "cosine"
+  use_lora: false
+  use_amp: false         # smoke run uses fp32, excluding AMP interference
+  freeze_epochs: 1       # contract: encoder permanently frozen (= max_epochs)
+  mixup_alpha: 0.0
+  checkpoint_dir: "./checkpoints/Contig_smoke"
+  log_interval: 5
+  global_lr_ratio: 0.1
+  local_lr_ratio: 0.2
+  use_fgm: false
+
+evaluation:
+  threshold: 0.5
+  output_dir: "./eval_output/Contig_smoke"
+  compute_breakpoint: true
+  compute_direction: true
+
+utils:
+  log_backend: "print"
+  early_stop_patience: 7
+  checkpoint_max_keep: 2
+  num_workers: 2
+  prefetch_factor: 2
+  persistent_workers: false

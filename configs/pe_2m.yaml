@@ -1,0 +1,100 @@
+# DeepFluHGT  —  PE 2M config (SECONDARY validation track, Step 4/4090  —  Contig is the main track, PE goes to Supplement)
+# ============================================================
+# Same changes as contig_500k.yaml:
+#   NTv3-650M-pre (species_ids removed) + Evo2 7B offline embedding; Caduceus removed.
+# note: RC augmentation currently supports contig mode only (PE fragment-level RC = R1/R2 swap, deferred),
+# hence rc_aug_prob: 0.0 in the PE config.
+# Data continues to use PE_2m (simulator section kept for regeneration)
+
+data:
+  mode: "paired_end"
+  read_length: 150
+  max_contig_length: 100000
+  use_sliding_window: false
+  # ── ──
+  evo_cache_path: "./evo_cache/PE_2m"
+  rc_aug_prob: 0.0        # not enabled for PE mode yet (TODO: fragment-level RC via R1/R2 swap)
+
+simulator:
+  virus_fasta: ""
+  microbe_dir: ""
+  output_dir: "./simulated_data/PE_2m"
+  n_pos: 1000000
+  n_neg: 1000000
+  seed: 42
+  read_len: 150
+  contig_min_length: 300
+  contig_max_length: 100000
+  insertion_prob: 0.6
+  replacement_prob: 0.3
+  deletion_prob: 0.1
+  multi_event_enabled: true
+  multi_event_prob: 0.2
+  multi_event_max: 3
+  multi_event_min_gap: 20
+  sandwich_enabled: true
+  sandwich_prob: 0.15
+  sandwich_min_gap: 5
+  virus_fragment_min: 20
+  virus_fragment_max: 200
+  genome_isolation_virus_ratios: [0.7, 0.15, 0.15]
+
+model:
+  hidden_dim: 768
+  num_attention_heads: 12
+  dropout: 0.20
+  graph_top_k: 5
+  bio_feature_dim: 260
+  # ── backbone models ──
+  pretrained_nt_path: "../../../model/InstaDeepAI/NTv3_650M_pre"
+  pretrained_caduceus_path: ""        # v7: Caduceus alreadyremove
+  use_local_encoder: false            # v7: single live encoder (NTv3-pre)
+  use_evo: true
+  pretrained_evo_dim: 4096
+  evo_hidden: 512
+
+loss:
+  use_uncertainty_weight: true
+  cls_weight: 1.0
+  bp_weight: 0.5
+  role_weight: 0.2
+  direction_weight: 0.2
+  region_pos_weight: 12.0
+  cascade_gate_slope: 10.0
+
+training:
+  batch_size: 20
+  learning_rate: 2.0e-5
+  backbone_lr_ratio: 0.1
+  lora_lr_multiplier: 2.0
+  weight_decay: 0.08
+  max_epochs: 30
+  gradient_clip_norm: 1.0
+  accumulation_steps: 1
+  warmup_ratio: 0.08
+  schedule_type: "cosine"
+  use_lora: false
+  lora_rank: 8
+  lora_alpha: 16.0
+  use_amp: true
+  freeze_epochs: 30      # contract: encoder permanently frozen (= max_epochs); see assert in DeepFluHGT.py
+  mixup_alpha: 0.3
+  checkpoint_dir: "./checkpoints/PE_2m"
+  log_interval: 50
+  global_lr_ratio: 0.1
+  local_lr_ratio: 0.2      # v7: no local encoder, this group is null (kept for compatibility)
+  use_fgm: false      # v7: with the encoder frozen, FGM (perturbing encoder embeddings) has no effect; disabled
+
+evaluation:
+  threshold: 0.5
+  output_dir: "./eval_output/PE_2m"
+  compute_breakpoint: true
+  compute_direction: true
+
+utils:
+  log_backend: "print"
+  early_stop_patience: 7
+  checkpoint_max_keep: 5
+  num_workers: 16
+  prefetch_factor: 4
+  persistent_workers: true

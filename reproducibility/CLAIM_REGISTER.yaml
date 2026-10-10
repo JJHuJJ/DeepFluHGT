@@ -1,0 +1,139 @@
+# DeepFluHGT — Canonical Claim Register (public release copy)
+# One row per verifiable claim; status as adjudicated at submission freeze.
+# manuscript_location strings updated for final table numbering.
+# 2026-10-08 micro-closure: 19 rows (18 SUPPORTED, 1 PARTIAL); empty template stubs removed;
+# HOM-01 re-YAMLified; C2-02 duplicate keys removed; C5-02 reference-run qualifier added.
+
+- claim_id: C1-01
+  claim: "Frozen NTv3-650M representations recover simulated HGT signal (AUPRC 0.827 test)"
+  location: "Results / Table 1"
+  status: SUPPORTED
+  evidence_type: direct_metric
+  evidence_artifact: "FINAL_RESULTS/TERMINAL_CANONICAL.json"
+  specification: prespecified
+- claim_id: C1-02
+  claim: "Frozen baseline retains 87.5% of fully-adaptive reference validation performance"
+  location: "Results / Fig 2b"
+  status: SUPPORTED
+  evidence_type: ratio_metric
+  evidence_artifact: "FINAL_RESULTS/TERMINAL_CANONICAL.json"
+  specification: prespecified
+- claim_id: C2-01
+  claim: "Frozen Evo2 embeddings strongly decodable for GC (R²=0.963)"
+  location: "Results / Fig 3b"
+  status: SUPPORTED
+  evidence_type: probe_metric
+  evidence_artifact: "evo_cache/step0_subset/rap/shortcut_audit.json"
+  specification: prespecified for M2/M3; retrospective for M0
+- claim_id: C2-02
+  claim: "Decision-layer residuals within prespecified thresholds (|r|<=0.10, eta^2<=0.02)"
+  location: "Results / Fig 3d"
+  status: SUPPORTED
+  evidence_type: residual audit
+  evidence_artifact: "docs/evidence/residual_corr_m0.json"
+  specification: prespecified for M2/M3; retrospective for M0
+- claim_id: C2-03
+  claim: "Composition ceiling (0.852) below embedding MLP probe (0.886) same-fold"
+  location: "Results / Fig 3c"
+  status: SUPPORTED
+  evidence_type: DeLong_contrast
+  evidence_artifact: "docs/evidence/homology_audit/ (P0 sensitivity)"
+  specification: prespecified for M2/M3; retrospective for M0
+- claim_id: C3-01
+  claim: "M0 pipeline detects simulated signal (positive control)"
+  location: "CEA C3"
+  status: SUPPORTED
+  evidence_type: direct_metric
+  evidence_artifact: "FINAL_RESULTS/TERMINAL_CANONICAL.json"
+  specification: prespecified
+- claim_id: C4-01
+  claim: "Zero-shot transfer to four real-world MGE anchors (AUROC 0.628-0.835)"
+  location: "Results / Fig 2c"
+  status: SUPPORTED
+  evidence_type: anchor_metric
+  evidence_artifact: "docs/evidence/terminal/M2/real_anchor_*.json"
+  specification: various
+- claim_id: C4-02
+  claim: "External criterion met on 1 of 4 anchors (Benbow only)"
+  location: "Results / ED-T3"
+  status: SUPPORTED
+  evidence_type: decision_rule
+  evidence_artifact: "docs/evidence/terminal/M2/real_anchor_benbow_m2final.json"
+  specification: various
+- claim_id: C5-01
+  claim: "Prespecified chance-band signature NOT observed (M3 retained 0.8652)"
+  location: "Results / ED-T2"
+  status: SUPPORTED
+  evidence_type: decision_rule
+  evidence_artifact: "FINAL_RESULTS/TERMINAL_CANONICAL.json"
+  specification: prespecified for M2/M3; retrospective for M0
+- claim_id: C5-02
+  claim: "Capacity-associated component M3−M0 = +0.0327 (54.0% of gain; under the canonical reference run; fraction not reference-stable, Supplementary S9.5)"
+  location: "Results / Table 1"
+  status: SUPPORTED
+  evidence_type: decomposition
+  evidence_artifact: "FINAL_RESULTS/TERMINAL_CANONICAL.json"
+  specification: prespecified for M2/M3; retrospective for M0
+- claim_id: C5-03
+  claim: "Residual M2−M3 = +0.0278; does not establish information-specific attribution"
+  location: "Results / ED-T2"
+  status: PARTIAL
+  evidence_type: decision_rule
+  evidence_artifact: "FINAL_RESULTS/TERMINAL_CANONICAL.json"
+  specification: prespecified for M2/M3; retrospective for M0
+- claim_id: C5-04
+  claim: "Decomposition robust under bootstrap (both components CI exclude zero)"
+  location: "Results / ED-T5"
+  status: SUPPORTED
+  evidence_type: bootstrap_CI
+  evidence_artifact: "docs/evidence/homology_audit/val_mixed_caliber_bootstrap.json"
+  specification: prespecified for M2/M3; retrospective for M0
+- claim_id: C5-05
+  claim: "Decomposition regime-dependent (capacity share 23-98% across calibers)"
+  location: "Results / ED-T5"
+  status: SUPPORTED
+  evidence_type: sensitivity
+  evidence_artifact: "docs/evidence/homology_audit/test_decomposition_bootstrap.json"
+  specification: prespecified for M2/M3; retrospective for M0
+- claim_id: FRZ-01
+  claim: "Backbone pretrained tensors bit-identical across all archived checkpoints (3 runs)"
+  location: "Results / SI S4"
+  status: SUPPORTED
+  evidence_type: freeze_audit
+  evidence_artifact: "FREEZE_AUDIT/terminal_freeze_audit.json"
+  specification: various
+- claim_id: FRZ-02
+  claim: "encoder_frozen=True in every checkpoint contract metadata"
+  location: "Methods §5.1"
+  status: SUPPORTED
+  evidence_type: checkpoint_inspection
+  evidence_artifact: "FREEZE_AUDIT/terminal_freeze_audit.json"
+  specification: various
+- claim_id: FRZ-03
+  claim: "trainable_n_params == optimizer_n_params in every checkpoint"
+  location: "SI S4.3"
+  status: SUPPORTED
+  evidence_type: checkpoint_inspection
+  evidence_artifact: "FREEZE_AUDIT/terminal_freeze_audit.json"
+  specification: various
+- claim_id: HOM-01
+  claim: "22.3% test genomes have train near-twins (≥95% identity, >50% coverage)"
+  location: "Methods (P0 rider)"
+  status: SUPPORTED
+  evidence_type: minimap2 audit
+  evidence_artifact: "docs/evidence/homology_audit/cross_split_homology_GENOME_FINAL.json"
+  specification: various
+- claim_id: HOM-02
+  claim: "Decomposition structure unchanged on near-twin-free subset"
+  location: "Results (P0 rider)"
+  status: SUPPORTED
+  evidence_type: sensitivity
+  evidence_artifact: "docs/evidence/homology_audit/clean_subset_decomposition.json"
+  specification: various
+- claim_id: HOM-03
+  claim: "Per-genome performance: clean 0.8634 ≈ twin 0.8678"
+  location: "Results (P0 rider)"
+  status: SUPPORTED
+  evidence_type: sensitivity
+  evidence_artifact: "docs/evidence/homology_audit/cross_split_homology_GENOME_FINAL.json"
+  specification: various

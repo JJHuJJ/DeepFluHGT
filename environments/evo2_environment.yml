@@ -1,0 +1,15 @@
+# Evo2 7B offline embedding environment (separate from main training env)
+# Python 3.11 + PyTorch 2.8.0+cu128 + flash-attention 2.8.3 + evo2 0.6.0
+name: evo2
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pytorch=2.8.0
+  - pytorch-cuda=12.8
+  - pip
+  - pip:
+    - flash-attn==2.8.3
+    - evo2==0.6.0

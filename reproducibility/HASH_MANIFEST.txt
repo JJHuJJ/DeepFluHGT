@@ -1,0 +1,21 @@
+# Canonical Identity Manifest — DeepFluHGT
+# Values as verified by the terminal freeze audit (bit-identical across runs).
+
+[Backbone]
+NTv3-650M-pre frozen encoder — tensor hash (321-scope, per HASH_SPEC_FINAL):
+  expected prefix: 3fd27815dc3584f0  (scope/spec per EXPERIMENT_CONTRACTS/HASH_SPEC_FINAL.md)
+Evo2 7B — offline channel, per-contig embeddings (blocks.28.mlp.l3), cache-verified
+
+[Parameter counts (trainable)]
+M0 (NTv3-only):        25,974,025
+M2 (NTv3 + Evo2):      28,474,890
+M3 (shuffled control): 28,474,890 (identical to M2 by design)
+
+[Checkpoint inventory (archived)]
+M0: 6 checkpoints   M2: 13 checkpoints   M3: 11 checkpoints
+Every checkpoint embeds contract metadata: freeze status, backbone/config/dataset-manifest
+hashes, parameter counts.
+
+[Verification]
+Run the freeze/identity audit described in EXPERIMENT_CONTRACTS/MODEL_IDENTITY_CONTRACT.md
+against any checkpoint to re-derive these values.

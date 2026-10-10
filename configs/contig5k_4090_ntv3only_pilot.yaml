@@ -1,0 +1,74 @@
+# DeepFluHGT  —  4090 memory validation + NTv3-only baseline kickoff (Step 1a)
+# ============================================================
+# Goal: verify whether an RTX 4090 (24GB) can handle NTv3-only frozen training
+# with production geometry (sw 3000/300). Once it passes → run the Contig_500k NTv3-only baseline on the 4090,
+# while the A100 focuses on the Evo2 cache / main model (experiments run in parallel, no DDP).
+# Memory strategy: b=2 × acc=2 (effective b=4); frozen NTv3 excluded from the optimizer, no gradient footprint.
+
+data:
+  mode: "contig"
+  read_length: 150
+  max_contig_length: 100000
+  use_sliding_window: true
+  sw_window_size: 3000        # production geometry (consistent with contig_500k_ntv3only)
+  sw_overlap: 300
+  sw_max_neg_windows: 2
+  sw_max_eval_windows: 10
+  evo_cache_path: ""          # NTv3-only
+  rc_aug_prob: 0.5
+
+model:
+  hidden_dim: 768
+  num_attention_heads: 12
+  dropout: 0.15
+  graph_top_k: 5
+  bio_feature_dim: 260
+  pretrained_nt_path: "../../../model/InstaDeepAI/NTv3_650M_pre"
+  pretrained_caduceus_path: ""
+  use_local_encoder: false
+  use_evo: false              # NTv3-only baseline
+  pretrained_evo_dim: 4096
+  evo_hidden: 512
+
+loss:
+  use_uncertainty_weight: true
+  cls_weight: 1.0
+  bp_weight: 0.8
+  role_weight: 0.2
+  direction_weight: 0.2
+  region_pos_weight: 15.0
+  cascade_gate_slope: 10.0
+
+training:
+  learning_rate: 2.0e-5
+  batch_size: 2               # conservative start on the 4090 24GB; drop to 1×4 if OOM
+  accumulation_steps: 8       # effective b=16 (aligned with production)
+  weight_decay: 0.05
+  max_epochs: 30
+  gradient_clip_norm: 1.0
+  warmup_ratio: 0.06
+  schedule_type: "cosine"
+  use_lora: false
+  use_amp: true
+  amp_dtype: "float16"
+  freeze_epochs: 30           # = max_epochs: encoder permanently frozen (contract)
+  mixup_alpha: 0.0
+  checkpoint_dir: "./checkpoints/Contig5k_4090_pilot"
+  log_interval: 20
+  global_lr_ratio: 0.1
+  local_lr_ratio: 0.2
+  use_fgm: false
+
+evaluation:
+  threshold: 0.5
+  output_dir: "./eval_output/Contig5k_4090_pilot"
+  compute_breakpoint: true
+  compute_direction: true
+
+utils:
+  log_backend: "print"
+  early_stop_patience: 5
+  checkpoint_max_keep: 2
+  num_workers: 2
+  prefetch_factor: 2
+  persistent_workers: false
