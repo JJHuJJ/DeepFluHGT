@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "DeepFluHGT: Frozen-Representation Attribution Audit"
+title: "Separating prediction from attribution in DNA foundation models for horizontal gene transfer detection"
 authors:
   - family-names: "Hu"
     given-names: "Jingjing"
