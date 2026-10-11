@@ -1,8 +1,8 @@
-# DeepFluHGT — Canonical Claim Register (public release copy)
+# DeepFluHGT v7.6 — Canonical Claim Register (public release copy)
 # One row per verifiable claim; status as adjudicated at submission freeze.
 # manuscript_location strings updated for final table numbering.
 # 2026-10-08 micro-closure: 19 rows (18 SUPPORTED, 1 PARTIAL); empty template stubs removed;
-# HOM-01 re-YAMLified; C2-02 duplicate keys removed; C5-02 reference-run qualifier added.
+# HOM-01 re-YAMLified; C2-02 duplicate keys removed; C5-02 reference-run qualifier added; W10 panel pointers synced to final Fig 3 lettering.
 
 - claim_id: C1-01
   claim: "Frozen NTv3-650M representations recover simulated HGT signal (AUPRC 0.827 test)"
@@ -27,14 +27,14 @@
   specification: prespecified for M2/M3; retrospective for M0
 - claim_id: C2-02
   claim: "Decision-layer residuals within prespecified thresholds (|r|<=0.10, eta^2<=0.02)"
-  location: "Results / Fig 3d"
+  location: "Results / Fig 3e"
   status: SUPPORTED
   evidence_type: residual audit
   evidence_artifact: "docs/evidence/residual_corr_m0.json"
   specification: prespecified for M2/M3; retrospective for M0
 - claim_id: C2-03
   claim: "Composition ceiling (0.852) below embedding MLP probe (0.886) same-fold"
-  location: "Results / Fig 3c"
+  location: "Results / Fig 3d"
   status: SUPPORTED
   evidence_type: DeLong_contrast
   evidence_artifact: "docs/evidence/homology_audit/ (P0 sensitivity)"
@@ -86,7 +86,7 @@
   location: "Results / ED-T5"
   status: SUPPORTED
   evidence_type: bootstrap_CI
-  evidence_artifact: "docs/evidence/homology_audit/val_mixed_caliber_bootstrap.json"
+  evidence_artifact: "docs/evidence/homology_audit/val_mixed_caliber_bootstrap_v2.json"
   specification: prespecified for M2/M3; retrospective for M0
 - claim_id: C5-05
   claim: "Decomposition regime-dependent (capacity share 23-98% across calibers)"

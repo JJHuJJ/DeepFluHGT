@@ -6,7 +6,7 @@ authors:
 version: 1.0
 date-released: "2026"
 license: MIT
-repository-code: "https://github.com/DeepFluHGT/DeepFluHGT"
+repository-code: "https://github.com/DeepFluHGT/DeepFluHGT-public"
 keywords:
   - horizontal gene transfer
   - DNA foundation models

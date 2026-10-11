@@ -1,6 +1,6 @@
 # DeepFluHGT — Frozen-Representation Attribution Audit
 
-Code release for: **"A prespecified audit framework for attributing foundation-model predictions to representation information"** (Nature Computational Science submission).
+Code release for: **"Separating prediction from attribution in DNA foundation models for horizontal gene transfer detection"** (Nature Computational Science submission).
 
 ## Overview
 
@@ -50,7 +50,7 @@ code/
 │   ├── verdict_calculator.py      # §12 prespecified rule machine computation
 │   ├── ...                           # Full pipeline (see scripts/run/ for launchers)
 │   └── run/                          # GPU launcher scripts (38 .sh)
-├── configs/                   # Training & evaluation configurations (10 .yaml)
+├── configs/                   # Training & evaluation configurations
 │   ├── contig_500k.yaml    # M2 training config (Evo2 channel)
 │   ├── contig_500k_m3.yaml # M3 shuffled-embedding control config
 │   └── ...
@@ -116,13 +116,11 @@ model/arcinstitute/evo2_7b/
 
 ### Evo2 embedding cache
 
-Precomputed per-contig embeddings (43 GB, float16) are archived on Zenodo: `[DOI: pending — Zenodo record will be created upon formal publication]`.
-Alternatively, regenerate via:
+Generated cache artifacts are not included in the initial release. They can be regenerated following the provided workflow (~13 GPU-days on 1x A100-80GB):
 ```bash
 python scripts/precompute_evo2_embeddings.py --model evo2_7b --layer blocks.28.mlp.l3 \
     --data simulated_data/ --output evo_cache/
 ```
-(~13 GPU-days on 1× A100-80GB)
 
 ## Training
 
@@ -170,16 +168,11 @@ bash scripts/run/terminal_eval_chain.sh
 The codebase includes machine-verified audit gates:
 
 ```bash
-# Every canonical number in the manuscript verified against source artifacts
-
-# Figure↔artifact forensic audit (0 failures required)
-
-# Claim-strength invariance (detects semantic upgrades)
+# Quick verification (compile + imports + 35 simulator tests)
+bash quick_verify.sh
 
 # §12 prespecified decision rules (machine-computed verdicts)
 python scripts/verdict_calculator.py
-
-# Provenance gate (checkpoint identity + freeze verification + metrics immutability)
 ```
 
 ## Hardware Requirements
@@ -212,12 +205,17 @@ licenses. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for details.
 
 If you use this code, please cite:
 ```
-[To be filled upon publication]
+Hu, J., Hu, S., Lu, S., Zhuang, S., Xu, W., Xiong, J., Feng, J., Chen, Z.,
+Zhang, Y., Xiong, C. & Wang, W. Separating prediction from attribution in
+DNA foundation models for horizontal gene transfer detection.
+Nature Computational Science (2026).
 ```
+[DOI to be added upon publication]
 
 ## Contact
 
-[Corresponding author — to be completed]
+Weibing Wang (wwb@fudan.edu.cn)
+School of Public Health, Fudan University, Shanghai, China
 
 
 ## Reproducibility entry points
