@@ -2,8 +2,9 @@
 # Values as verified by the terminal freeze audit (bit-identical across runs).
 
 [Backbone]
-NTv3-650M-pre frozen encoder — tensor hash (321-scope, per HASH_SPEC_FINAL):
-  expected prefix: 3fd27815dc3584f0  (scope/spec per EXPERIMENT_CONTRACTS/HASH_SPEC_FINAL.md)
+NTv3-650M-pre frozen encoder — tensor hash (322-scope, Protocol B: key + tensor_bytes):
+  expected prefix: 3fd27815dc3584f0  (= manuscript Methods value)
+  Protocol A / 321-scope canonical (HASH_SPEC_FINAL): c8297b1ee6723e55
 Evo2 7B — offline channel, per-contig embeddings (blocks.28.mlp.l3), cache-verified
 
 [Parameter counts (trainable)]
