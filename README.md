@@ -217,6 +217,8 @@ Nature Computational Science (2026).
 Jingjing Hu (jjhu24@m.fudan.edu.cn)
 Shanghai Institute of Infectious Disease and Biosecurity, Fudan University, Shanghai, China
 
+Corresponding author: Weibing Wang (wwb@fudan.edu.cn), School of Public Health, Fudan University, Shanghai, China
+
 
 ## Reproducibility entry points
 - `scripts/paired_bootstrap.py` — reruns the published Philympics paired-event CI from the two shipped inputs (`docs/evidence/real_anchor_philympics_m0final.npz`, `benchmark/philympics/anchor_data/matching_stats.json`).
