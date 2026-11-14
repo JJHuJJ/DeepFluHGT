@@ -201,17 +201,6 @@ licenses. DeepFluHGT does not redistribute pretrained model weights; users
 must obtain and use pretrained models under their respective upstream
 licenses. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for details.
 
-## Citation
-
-If you use this code, please cite:
-```
-Hu, J., Hu, S., Lu, S., Zhuang, S., Xu, W., Xiong, J., Feng, J., Chen, Z.,
-Zhang, Y., Xiong, C. & Wang, W. Separating prediction from attribution in
-DNA foundation models for horizontal gene transfer detection.
-Nature Computational Science (2026).
-```
-[DOI to be added upon publication]
-
 ## Contact
 
 Jingjing Hu (jjhu24@m.fudan.edu.cn)
