@@ -212,3 +212,19 @@ Corresponding author: Weibing Wang (wwb@fudan.edu.cn), School of Public Health, 
 ## Reproducibility entry points
 - `scripts/paired_bootstrap.py` — reruns the published Philympics paired-event CI from the shipped pair file (`benchmark/philympics/anchor_data/matching_stats.json`); the per-event score archive (`real_anchor_philympics_m0final.npz`) is retained in the study evidence record and is available from the authors on request.
 - `scripts/homology_repertoire_analyze.py` — recomputes the junction-perturbation statistics from per-arm score files (path via `--scores`; retained in the study evidence record, available from the authors on request).
+
+
+## Citation
+
+If you use this software, please cite it as below (the "Cite this repository"
+button provides the same citation generated from `CITATION.cff`):
+
+> Hu, J., Hu, S., Sun, Z. et al. *Separating prediction from attribution in
+> DNA foundation models for horizontal gene transfer detection* (v1.1)
+> [Computer software]. GitHub (2026). https://github.com/JJHuJJ/DeepFluHGT
+
+The simulated benchmark dataset is archived separately:
+
+> Hu, J., Hu, S., Sun, Z. et al. *Separating prediction from attribution in
+> DNA foundation models for horizontal gene transfer detection* [Data set].
+> Zenodo (2026). https://doi.org/10.5281/zenodo.23473128
