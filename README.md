@@ -1,6 +1,6 @@
 # DeepFluHGT — Frozen-Representation Attribution Audit
 
-Code release for: **"Separating prediction from attribution in DNA foundation models for horizontal gene transfer detection"** (Nature Computational Science submission).
+Code release for: **"Separating prediction from attribution in DNA foundation models for horizontal gene transfer detection"** (manuscript in submission; code released for reproducibility).
 
 ## Overview
 
@@ -187,7 +187,7 @@ python scripts/verdict_calculator.py
 
 ## Simulated Benchmark Data
 
-The genome-isolated simulated benchmark (Contig_500k: 400k/50k/50k train/val/test contigs, 9,242 training genomes) is archived separately: `[DOI: pending — Zenodo record will be created upon formal publication]`.
+The genome-partitioned simulated benchmark (Contig_500k: 400k/50k/50k train/val/test contigs, 9,242 training genomes) is archived separately: https://doi.org/10.5281/zenodo.23473128 (version 1.0, CC-BY 4.0).
 
 ## License
 
