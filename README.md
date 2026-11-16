@@ -1,6 +1,6 @@
 # DeepFluHGT — Frozen-Representation Attribution Audit
 
-Code release for: **"Separating prediction from attribution in DNA foundation models for horizontal gene transfer detection"** (manuscript in submission; code released for reproducibility).
+Code release for: **"Evaluating information attribution in genomic foundation models for horizontal gene transfer detection"** (manuscript in submission; code released for reproducibility).
 
 ## Overview
 
@@ -219,12 +219,10 @@ Corresponding author: Weibing Wang (wwb@fudan.edu.cn), School of Public Health, 
 If you use this software, please cite it as below (the "Cite this repository"
 button provides the same citation generated from `CITATION.cff`):
 
-> Hu, J., Hu, S., Sun, Z. et al. *Separating prediction from attribution in
-> DNA foundation models for horizontal gene transfer detection* (v1.1)
+> Hu, J., Hu, S., Sun, Z. et al. *Evaluating information attribution in genomic foundation models for horizontal gene transfer detection* (v1.1)
 > [Computer software]. GitHub (2026). https://github.com/JJHuJJ/DeepFluHGT
 
 The simulated benchmark dataset is archived separately:
 
-> Hu, J., Hu, S., Sun, Z. et al. *Separating prediction from attribution in
-> DNA foundation models for horizontal gene transfer detection* [Data set].
+> Hu, J., Hu, S., Sun, Z. et al. *Evaluating information attribution in genomic foundation models for horizontal gene transfer detection* [Data set].
 > Zenodo (2026). https://doi.org/10.5281/zenodo.23473128
